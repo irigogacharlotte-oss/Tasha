@@ -1,0 +1,19 @@
+{
+  "name": "tasha",
+  "version": "1.0.0",
+  "description": "README.md",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://local_proxy@127.0.0.1:38357/git/irigogacharlotte-oss/Tasha"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chart.js": "^4.5.1"
+  }
+}
