@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finance Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">
+      <span class="logo-icon">💰</span>
+      <span class="logo-text">FinTrack</span>
+    </div>
+    <nav class="nav">
+      <a href="#" class="nav-item active" data-tab="overview">
+        <span class="nav-icon">📊</span> Overview
+      </a>
+      <a href="#" class="nav-item" data-tab="transactions">
+        <span class="nav-icon">💳</span> Transactions
+      </a>
+      <a href="#" class="nav-item" data-tab="savings">
+        <span class="nav-icon">🏦</span> Savings Goals
+      </a>
+      <a href="#" class="nav-item" data-tab="budget">
+        <span class="nav-icon">📋</span> Budget
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <span id="currentMonth"></span>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <h1 class="page-title" id="pageTitle">Overview</h1>
+        <p class="page-subtitle" id="pageSubtitle">Your financial snapshot</p>
+      </div>
+      <div class="header-right">
+        <select id="monthFilter" class="month-select">
+          <option value="all">All Time</option>
+        </select>
+        <button class="btn-primary" id="addTransactionBtn">+ Add Transaction</button>
+      </div>
+    </header>
+
+    <!-- TAB: Overview -->
+    <div id="tab-overview" class="tab-content active">
+      <!-- Summary Cards -->
+      <div class="cards-grid">
+        <div class="card card-balance">
+          <div class="card-header">
+            <span class="card-label">Net Balance</span>
+            <span class="card-icon">💵</span>
+          </div>
+          <div class="card-value" id="totalBalance">£0.00</div>
+          <div class="card-trend" id="balanceTrend"></div>
+        </div>
+        <div class="card card-income">
+          <div class="card-header">
+            <span class="card-label">Total Income</span>
+            <span class="card-icon">📈</span>
+          </div>
+          <div class="card-value" id="totalIncome">£0.00</div>
+          <div class="card-trend" id="incomeTrend"></div>
+        </div>
+        <div class="card card-expense">
+          <div class="card-header">
+            <span class="card-label">Total Expenses</span>
+            <span class="card-icon">📉</span>
+          </div>
+          <div class="card-value" id="totalExpenses">£0.00</div>
+          <div class="card-trend" id="expenseTrend"></div>
+        </div>
+        <div class="card card-savings">
+          <div class="card-header">
+            <span class="card-label">Savings Rate</span>
+            <span class="card-icon">🏦</span>
+          </div>
+          <div class="card-value" id="savingsRate">0%</div>
+          <div class="card-trend" id="savingsTrend"></div>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="charts-row">
+        <div class="chart-card wide">
+          <div class="chart-title">Monthly Income vs Expenses</div>
+          <canvas id="monthlyChart" height="90"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Spending by Category</div>
+          <canvas id="categoryChart" height="200"></canvas>
+          <div id="categoryLegend" class="chart-legend"></div>
+        </div>
+      </div>
+
+      <!-- Recent Transactions -->
+      <div class="section-card">
+        <div class="section-header">
+          <h2 class="section-title">Recent Transactions</h2>
+          <a href="#" class="view-all" data-tab-link="transactions">View all</a>
+        </div>
+        <div id="recentTransactions" class="transaction-list"></div>
+        <div id="emptyOverview" class="empty-state" style="display:none">
+          <div class="empty-icon">📭</div>
+          <p>No transactions yet. Add your first transaction!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: Transactions -->
+    <div id="tab-transactions" class="tab-content">
+      <div class="section-card">
+        <div class="section-header">
+          <h2 class="section-title">All Transactions</h2>
+          <div class="filter-group">
+            <select id="typeFilter" class="filter-select">
+              <option value="all">All Types</option>
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
+            <select id="categoryFilter" class="filter-select">
+              <option value="all">All Categories</option>
+            </select>
+          </div>
+        </div>
+        <div id="allTransactions" class="transaction-list"></div>
+        <div id="emptyTransactions" class="empty-state" style="display:none">
+          <div class="empty-icon">📭</div>
+          <p>No transactions found.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: Savings -->
+    <div id="tab-savings" class="tab-content">
+      <div class="section-card">
+        <div class="section-header">
+          <h2 class="section-title">Savings Goals</h2>
+          <button class="btn-primary" id="addGoalBtn">+ Add Goal</button>
+        </div>
+        <div id="savingsGoals" class="goals-grid"></div>
+        <div id="emptyGoals" class="empty-state" style="display:none">
+          <div class="empty-icon">🎯</div>
+          <p>No savings goals yet. Set a goal to stay on track!</p>
+        </div>
+      </div>
+
+      <!-- Savings Summary -->
+      <div class="section-card">
+        <div class="chart-title">Savings Progress</div>
+        <canvas id="savingsChart" height="80"></canvas>
+      </div>
+    </div>
+
+    <!-- TAB: Budget -->
+    <div id="tab-budget" class="tab-content">
+      <div class="section-card">
+        <div class="section-header">
+          <h2 class="section-title">Monthly Budget</h2>
+          <button class="btn-primary" id="addBudgetBtn">+ Set Budget</button>
+        </div>
+        <div id="budgetList" class="budget-list"></div>
+        <div id="emptyBudget" class="empty-state" style="display:none">
+          <div class="empty-icon">📋</div>
+          <p>No budgets set. Add budgets for your spending categories!</p>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="chart-title">Budget vs Actual Spending</div>
+        <canvas id="budgetChart" height="100"></canvas>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal: Add Transaction -->
+  <div id="transactionModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTxTitle">
+    <div class="modal-overlay"></div>
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 id="modalTxTitle">Add Transaction</h2>
+        <button class="modal-close" id="closeTransactionModal">&times;</button>
+      </div>
+      <form id="transactionForm" class="modal-form">
+        <input type="hidden" id="txEditId" />
+        <div class="form-group">
+          <label>Type</label>
+          <div class="radio-group">
+            <label class="radio-label">
+              <input type="radio" name="txType" value="income" checked /> Income
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="txType" value="expense" /> Expense
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="txDescription">Description</label>
+          <input type="text" id="txDescription" placeholder="e.g. Salary, Rent, Groceries" required />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="txAmount">Amount (£)</label>
+            <input type="number" id="txAmount" placeholder="0.00" min="0.01" step="0.01" required />
+          </div>
+          <div class="form-group">
+            <label for="txDate">Date</label>
+            <input type="date" id="txDate" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="txCategory">Category</label>
+          <select id="txCategory" required>
+            <option value="">Select category...</option>
+            <optgroup label="Income">
+              <option value="Salary">Salary</option>
+              <option value="Freelance">Freelance</option>
+              <option value="Investment">Investment</option>
+              <option value="Gift">Gift</option>
+              <option value="Other Income">Other Income</option>
+            </optgroup>
+            <optgroup label="Expenses">
+              <option value="Housing">Housing</option>
+              <option value="Food & Groceries">Food & Groceries</option>
+              <option value="Transport">Transport</option>
+              <option value="Utilities">Utilities</option>
+              <option value="Healthcare">Healthcare</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Shopping">Shopping</option>
+              <option value="Education">Education</option>
+              <option value="Savings Transfer">Savings Transfer</option>
+              <option value="Other Expense">Other Expense</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="txNote">Note (optional)</label>
+          <input type="text" id="txNote" placeholder="Additional details..." />
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" id="cancelTransaction">Cancel</button>
+          <button type="submit" class="btn-primary">Save Transaction</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Add Savings Goal -->
+  <div id="goalModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalGoalTitle">
+    <div class="modal-overlay"></div>
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 id="modalGoalTitle">Add Savings Goal</h2>
+        <button class="modal-close" id="closeGoalModal">&times;</button>
+      </div>
+      <form id="goalForm" class="modal-form">
+        <input type="hidden" id="goalEditId" />
+        <div class="form-group">
+          <label for="goalName">Goal Name</label>
+          <input type="text" id="goalName" placeholder="e.g. Holiday Fund, New Car" required />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="goalTarget">Target Amount (£)</label>
+            <input type="number" id="goalTarget" placeholder="0.00" min="1" step="0.01" required />
+          </div>
+          <div class="form-group">
+            <label for="goalSaved">Amount Saved (£)</label>
+            <input type="number" id="goalSaved" placeholder="0.00" min="0" step="0.01" value="0" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="goalDeadline">Target Date (optional)</label>
+          <input type="date" id="goalDeadline" />
+        </div>
+        <div class="form-group">
+          <label for="goalIcon">Icon</label>
+          <select id="goalIcon">
+            <option value="🏖️">🏖️ Holiday</option>
+            <option value="🚗">🚗 Car</option>
+            <option value="🏠">🏠 Home</option>
+            <option value="💍">💍 Wedding</option>
+            <option value="📚">📚 Education</option>
+            <option value="💻">💻 Tech</option>
+            <option value="🏋️">🏋️ Health</option>
+            <option value="🎁">🎁 Gift</option>
+            <option value="🌟">🌟 Other</option>
+          </select>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" id="cancelGoal">Cancel</button>
+          <button type="submit" class="btn-primary">Save Goal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Set Budget -->
+  <div id="budgetModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalBudgetTitle">
+    <div class="modal-overlay"></div>
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 id="modalBudgetTitle">Set Budget</h2>
+        <button class="modal-close" id="closeBudgetModal">&times;</button>
+      </div>
+      <form id="budgetForm" class="modal-form">
+        <input type="hidden" id="budgetEditId" />
+        <div class="form-group">
+          <label for="budgetCategory">Category</label>
+          <select id="budgetCategory" required>
+            <option value="">Select category...</option>
+            <option value="Housing">Housing</option>
+            <option value="Food & Groceries">Food & Groceries</option>
+            <option value="Transport">Transport</option>
+            <option value="Utilities">Utilities</option>
+            <option value="Healthcare">Healthcare</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Shopping">Shopping</option>
+            <option value="Education">Education</option>
+            <option value="Savings Transfer">Savings Transfer</option>
+            <option value="Other Expense">Other Expense</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="budgetAmount">Monthly Budget (£)</label>
+          <input type="number" id="budgetAmount" placeholder="0.00" min="1" step="0.01" required />
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" id="cancelBudget">Cancel</button>
+          <button type="submit" class="btn-primary">Save Budget</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
