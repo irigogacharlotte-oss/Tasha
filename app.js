@@ -33,43 +33,43 @@ function seedDemoData() {
   const py   = now.getMonth() === 0 ? y - 1 : y;
 
   const txs = [
-    { type:'income',  description:'Monthly Salary',     amount:3500,  category:'Salary',            date:`${y}-${m}-01`,  note:'' },
-    { type:'income',  description:'Freelance Project',  amount:650,   category:'Freelance',          date:`${y}-${m}-08`,  note:'Web design' },
-    { type:'expense', description:'Rent',               amount:1100,  category:'Housing',            date:`${y}-${m}-01`,  note:'' },
-    { type:'expense', description:'Electricity Bill',   amount:82,    category:'Utilities',          date:`${y}-${m}-05`,  note:'' },
-    { type:'expense', description:'Groceries',          amount:210,   category:'Food & Groceries',   date:`${y}-${m}-10`,  note:'Weekly shop' },
-    { type:'expense', description:'Gym Membership',     amount:45,    category:'Healthcare',         date:`${y}-${m}-03`,  note:'' },
-    { type:'expense', description:'Netflix & Spotify',  amount:23,    category:'Entertainment',      date:`${y}-${m}-06`,  note:'' },
-    { type:'expense', description:'Train Pass',         amount:135,   category:'Transport',          date:`${y}-${m}-02`,  note:'' },
-    { type:'expense', description:'Online Shopping',    amount:95,    category:'Shopping',           date:`${y}-${m}-12`,  note:'Amazon' },
-    { type:'income',  description:'Monthly Salary',     amount:3500,  category:'Salary',            date:`${py}-${pm}-01`, note:'' },
-    { type:'expense', description:'Rent',               amount:1100,  category:'Housing',            date:`${py}-${pm}-01`, note:'' },
-    { type:'expense', description:'Groceries',          amount:195,   category:'Food & Groceries',   date:`${py}-${pm}-14`, note:'' },
-    { type:'expense', description:'Dining Out',         amount:68,    category:'Food & Groceries',   date:`${py}-${pm}-18`, note:'' },
-    { type:'expense', description:'Transport',          amount:120,   category:'Transport',          date:`${py}-${pm}-05`, note:'' },
-    { type:'expense', description:'Utilities',          amount:90,    category:'Utilities',          date:`${py}-${pm}-07`, note:'' },
-    { type:'income',  description:'Investment Return',  amount:220,   category:'Investment',         date:`${py}-${pm}-25`, note:'Dividends' },
+    { type:'income',  description:'Monthly Salary',     amount:500000,  category:'Salary',            date:`${y}-${m}-01`,  note:'' },
+    { type:'income',  description:'Freelance Project',  amount:120000,  category:'Freelance',          date:`${y}-${m}-08`,  note:'Web design' },
+    { type:'expense', description:'Rent',               amount:150000,  category:'Housing',            date:`${y}-${m}-01`,  note:'' },
+    { type:'expense', description:'Electricity Bill',   amount:18000,   category:'Utilities',          date:`${y}-${m}-05`,  note:'' },
+    { type:'expense', description:'Groceries',          amount:35000,   category:'Food & Groceries',   date:`${y}-${m}-10`,  note:'Weekly shop' },
+    { type:'expense', description:'Gym Membership',     amount:10000,   category:'Healthcare',         date:`${y}-${m}-03`,  note:'' },
+    { type:'expense', description:'MTN / Airtel Data',  amount:5000,    category:'Entertainment',      date:`${y}-${m}-06`,  note:'' },
+    { type:'expense', description:'Moto Taxi',          amount:22000,   category:'Transport',          date:`${y}-${m}-02`,  note:'' },
+    { type:'expense', description:'Online Shopping',    amount:28000,   category:'Shopping',           date:`${y}-${m}-12`,  note:'Jumia' },
+    { type:'income',  description:'Monthly Salary',     amount:500000,  category:'Salary',            date:`${py}-${pm}-01`, note:'' },
+    { type:'expense', description:'Rent',               amount:150000,  category:'Housing',            date:`${py}-${pm}-01`, note:'' },
+    { type:'expense', description:'Groceries',          amount:30000,   category:'Food & Groceries',   date:`${py}-${pm}-14`, note:'' },
+    { type:'expense', description:'Dining Out',         amount:15000,   category:'Food & Groceries',   date:`${py}-${pm}-18`, note:'' },
+    { type:'expense', description:'Transport',          amount:20000,   category:'Transport',          date:`${py}-${pm}-05`, note:'' },
+    { type:'expense', description:'Utilities',          amount:18000,   category:'Utilities',          date:`${py}-${pm}-07`, note:'' },
+    { type:'income',  description:'Investment Return',  amount:45000,   category:'Investment',         date:`${py}-${pm}-25`, note:'Dividends' },
   ];
   txs.forEach(t => state.transactions.push({ id: uid(), ...t }));
 
   state.goals = [
-    { id: uid(), name:'Summer Holiday', icon:'🏖️', target:3000,  saved:1200, deadline:`${y}-08-31` },
-    { id: uid(), name:'Emergency Fund', icon:'🌟', target:10000, saved:6500, deadline:'' },
-    { id: uid(), name:'New Laptop',     icon:'💻', target:1200,  saved:1200, deadline:'' },
+    { id: uid(), name:'Family Holiday',  icon:'🏖️', target:800000,   saved:320000,  deadline:`${y}-08-31` },
+    { id: uid(), name:'Emergency Fund',  icon:'🌟', target:2000000,  saved:1300000, deadline:'' },
+    { id: uid(), name:'New Laptop',      icon:'💻', target:350000,   saved:350000,  deadline:'' },
   ];
   state.budgets = [
-    { id: uid(), category:'Housing',          amount:1200 },
-    { id: uid(), category:'Food & Groceries', amount:300  },
-    { id: uid(), category:'Transport',        amount:150  },
-    { id: uid(), category:'Entertainment',    amount:60   },
-    { id: uid(), category:'Shopping',         amount:100  },
+    { id: uid(), category:'Housing',          amount:160000 },
+    { id: uid(), category:'Food & Groceries', amount:60000  },
+    { id: uid(), category:'Transport',        amount:30000  },
+    { id: uid(), category:'Entertainment',    amount:15000  },
+    { id: uid(), category:'Shopping',         amount:40000  },
   ];
   save();
 }
 
 // ── Helpers ───────────────────────────────────────────────
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
-function fmt(n) { return '£' + Math.abs(n).toLocaleString('en-GB', { minimumFractionDigits:2, maximumFractionDigits:2 }); }
+function fmt(n) { return 'RWF ' + Math.abs(n).toLocaleString('en-RW', { minimumFractionDigits:0, maximumFractionDigits:0 }); }
 function fmtDate(iso) {
   if (!iso) return '';
   const [y, m, d] = iso.split('-');
@@ -144,7 +144,7 @@ function buildMonthlyChart() {
       plugins: { legend:{ labels:{ boxWidth:10, padding:16 } }, tooltip:{ callbacks:{ label: c => ' '+fmt(c.raw) } } },
       scales: {
         x: { grid:{ color:'rgba(255,255,255,.04)' }, border:{ display:false } },
-        y: { grid:{ color:'rgba(255,255,255,.04)' }, border:{ display:false }, ticks:{ callback: v => '£'+v.toLocaleString() } },
+        y: { grid:{ color:'rgba(255,255,255,.04)' }, border:{ display:false }, ticks:{ callback: v => 'RWF '+Math.round(v).toLocaleString('en-RW') } },
       },
     },
   });
@@ -196,7 +196,7 @@ function buildSavingsChart() {
       responsive: true,
       plugins: { legend:{ labels:{ boxWidth:10 } }, tooltip:{ callbacks:{ label: c => ' '+fmt(c.raw) } } },
       scales: {
-        x: { stacked:true, grid:{ color:'rgba(255,255,255,.04)' }, border:{ display:false }, ticks:{ callback: v => '£'+v.toLocaleString() } },
+        x: { stacked:true, grid:{ color:'rgba(255,255,255,.04)' }, border:{ display:false }, ticks:{ callback: v => 'RWF '+Math.round(v).toLocaleString('en-RW') } },
         y: { stacked:true, grid:{ display:false }, border:{ display:false } },
       },
     },
@@ -231,7 +231,7 @@ function buildBudgetChart() {
       plugins: { legend:{ labels:{ boxWidth:10 } }, tooltip:{ callbacks:{ label: c => ' '+fmt(c.raw) } } },
       scales: {
         x: { grid:{ color:'rgba(255,255,255,.04)' }, border:{ display:false } },
-        y: { grid:{ color:'rgba(255,255,255,.04)' }, border:{ display:false }, ticks:{ callback: v => '£'+v.toLocaleString() } },
+        y: { grid:{ color:'rgba(255,255,255,.04)' }, border:{ display:false }, ticks:{ callback: v => 'RWF '+Math.round(v).toLocaleString('en-RW') } },
       },
     },
   });
